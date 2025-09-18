@@ -1,7 +1,5 @@
 import express from "express";
-import mongoose from "mongoose";
 
-import User from "../models/userModel.mjs";
 import Artist from "../models/artistModel.mjs";
 import Album from "../models/albumModel.mjs";
 import Song from "../models/songModel.mjs";
@@ -14,22 +12,41 @@ import playlistData from "../data/playlists.mjs";
 
 const router = express.Router();
 
-router.get("/seed", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
-        await Promise.all([
-            User.deleteMany({}),
+        const testRun = req.query.test === "true";
+        const reset = req.query.reset === "true";
+
+        if(testRun){
+            return res.json({
+                artists: artistsData,
+                albums: albumsData,
+                songs: songsData,
+                playlists: playlistData,
+                note: "Test run: No data inserted"
+            });
+        }
+
+        if(reset){
+          await Promise.all([
             Artist.deleteMany({}),
             Album.deleteMany({}),
             Song.deleteMany({}),
             Playlist.deleteMany({})
         ]);
+        }
 
-        const users = await User.insertMany([
-            { username: "liam", email: "liam@example.com", password: "123" },
-            { username: "rockifyGuest", email: "rocify@example.com", password: "abc" }
-        ]);
-
+        // Insert data
+        const insertedArtists = await Artist.insertMany(artistsData);
+        
+        // Map artist name with ID for handling relationships between albums and songs
+        const artistMap = {};
+        insertedArtists.forEach(a => {
+            artistMap[a.name] = a._id;
+        });
     } catch (err) {
-
+        res.status(500).json({ error: err.message });
     }
 })
+
+export default router;
