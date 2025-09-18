@@ -74,6 +74,16 @@ router.get("/", async (req, res) => {
             songMap[s.title] = s._id;
         });
 
+        // Replace song titles with ObjectId
+        const playlistsWithRefs = playlistData.map(playlist => ({
+            ...playlist,
+            songs: playlist.songs.map(title => songMap[title])
+        }));
+
+        // Insert playlists data
+        await Playlist.insertMany(playlistsWithRefs);
+
+        res.json({ message: "Database seeded successfully" });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
