@@ -36,7 +36,7 @@ router.get("/", async (req, res) => {
         ]);
         }
 
-        // Insert data
+        // Insert artists data
         const insertedArtists = await Artist.insertMany(artistsData);
         
         // Map artist name with ID for handling relationships between albums and songs
@@ -44,6 +44,22 @@ router.get("/", async (req, res) => {
         insertedArtists.forEach(a => {
             artistMap[a.name] = a._id;
         });
+
+        // Replace artist names in albums with ObjectId
+        const albumsWithRefs = albumsData.map(album => ({
+            ...album,
+            artist: artistMap[album.artist]
+        }));
+
+        // Insert albums data
+        const insertedAlbums = await Album.insertMany(albumsWithRefs);
+
+        // Map album title -> ID
+        const albumMap = {};
+        insertedAlbums.forEach(a => { albumMap[a.title] = a._id });
+
+        
+
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
