@@ -1,5 +1,6 @@
 import express from "express";
 
+import User from "../models/userModel.mjs";
 import Artist from "../models/artistModel.mjs";
 import Album from "../models/albumModel.mjs";
 import Song from "../models/songModel.mjs";
@@ -17,7 +18,7 @@ router.get("/", async (req, res) => {
         const testRun = req.query.test === "true";
         const reset = req.query.reset === "true";
 
-        if(testRun){
+        if (testRun) {
             return res.json({
                 artists: artistsData,
                 albums: albumsData,
@@ -27,18 +28,18 @@ router.get("/", async (req, res) => {
             });
         }
 
-        if(reset){
-          await Promise.all([
-            Artist.deleteMany({}),
-            Album.deleteMany({}),
-            Song.deleteMany({}),
-            Playlist.deleteMany({})
-        ]);
+        if (reset) {
+            await Promise.all([
+                Artist.deleteMany({}),
+                Album.deleteMany({}),
+                Song.deleteMany({}),
+                Playlist.deleteMany({})
+            ]);
         }
 
         // Insert artists data
         const insertedArtists = await Artist.insertMany(artistsData);
-        
+
         // Map artist name -> ID
         const artistMap = {};
         insertedArtists.forEach(a => {
@@ -74,10 +75,23 @@ router.get("/", async (req, res) => {
             songMap[s.title] = s._id;
         });
 
+        // For testing purposes I will attach my created user to sample playlists
+        const liam = await User.findOne({ username: "liam" });
+
+        if (!liam) {
+            liam = await User.create({
+                username: "liam",
+                email: "liam@example.com",
+                password: "123" // no hashing yet just for testing purposes
+            });
+
+        }
+
         // Replace song titles with ObjectId
         const playlistsWithRefs = playlistData.map(playlist => ({
             ...playlist,
-            songs: playlist.songs.map(title => songMap[title])
+            songs: playlist.songs.map(title => songMap[title]),
+            user: liam._id
         }));
 
         // Insert playlists data
