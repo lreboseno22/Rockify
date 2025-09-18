@@ -22,6 +22,31 @@ router.get("/:id", async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-})
+});
+
+router.put("/:id", async (req, res) => {
+    try {
+        const updatedArtist = await Artist.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true, runValidators: true }
+        );
+
+        if(!updatedArtist) return res.status(404).json({ error: "Artist not found"});
+        res.json(updatedArtist);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+router.delete("/:id", async (req, res) => {
+    try {
+        const deletedArtist = await Artist.findByIdAndDelete(req.params.id);
+        if(!deletedArtist) return res.status(404).json({ error: "Artist not found" });
+        res.json({ message: "Artist deleted" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
 
 export default router;
