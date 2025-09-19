@@ -53,7 +53,9 @@ router.put("/", async (req, res) => {
 // Delete song
 router.delete("/", async (req, res) => {
     try {
-
+        const deletedSong = await Song.findByIdAndDelete(req.params.id);
+        if(!deletedSong) return res.status(404).json({ error: "Song not found" });
+        res.json({ message: "Song deleted" });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
