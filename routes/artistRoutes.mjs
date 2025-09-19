@@ -24,6 +24,7 @@ router.get("/:id", async (req, res) => {
     }
 });
 
+// Update (put) artist
 router.put("/:id", async (req, res) => {
     try {
         const updatedArtist = await Artist.findByIdAndUpdate(
@@ -39,6 +40,7 @@ router.put("/:id", async (req, res) => {
     }
 });
 
+// Delete artist
 router.delete("/:id", async (req, res) => {
     try {
         const deletedArtist = await Artist.findByIdAndDelete(req.params.id);
