@@ -7,6 +7,7 @@ import userRoutes from "./routes/userRoutes.mjs";
 import seedRoutes from "./routes/seedRoutes.mjs";
 import artistRoutes from "./routes/artistRoutes.mjs";
 import albumRoutes from "./routes/albumRoutes.mjs";
+import songRoutes from "./routes/songRoutes.mjs";
 
 // SETUP
 dotenv.config();
@@ -25,6 +26,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/seed", seedRoutes);
 app.use("/api/artists", artistRoutes);
 app.use("/api/albums", albumRoutes);
+app.use("/api/songs", songRoutes);
 
 // GLOBAL ERROR
 app.use(globalErr);
