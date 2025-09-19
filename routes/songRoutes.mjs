@@ -24,4 +24,39 @@ router.get("/:id", async (req, res) => {
     }
 })
 
+// Post song
+router.post("/", async (req, res) => {
+    try {
+        const newSong = new Song(req.body);
+        const savedSong = await newSong.save();
+        res.status(201).json(savedSong);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Put update song
+router.put("/", async (req, res) => {
+    try {
+        const updatedSong = await Song.findByIdAndUpdate(
+            req.paramss.id, 
+            req.body, 
+            { new: true, runValidators: true }
+        );
+        if(!updatedSong) return res.status(404).json({ error: "Song not found" });
+        res.json(updatedSong);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Delete song
+router.delete("/", async (req, res) => {
+    try {
+
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 export default router;
