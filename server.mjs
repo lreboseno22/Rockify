@@ -28,7 +28,7 @@ app.use("/api/seed", seedRoutes);
 app.use("/api/artists", artistRoutes);
 app.use("/api/albums", albumRoutes);
 app.use("/api/songs", songRoutes);
-app.use("/api/playlists", playlistRoutes)
+app.use("/api/playlists", playlistRoutes);
 
 // GLOBAL ERROR
 app.use(globalErr);

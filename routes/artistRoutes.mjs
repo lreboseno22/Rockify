@@ -24,6 +24,17 @@ router.get("/:id", async (req, res) => {
     }
 });
 
+// Post artist
+router.post("/", async (req, res) =>{
+    try {
+        const newArtist = new Artist(req.body);
+        const savedArtist = await newArtist.save();
+        res.status(201).json(savedArtist);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+})
+
 // Update (put) artist
 router.put("/:id", async (req, res) => {
     try {
