@@ -36,10 +36,10 @@ router.post("/", async (req, res) => {
 });
 
 // Put update song
-router.put("/", async (req, res) => {
+router.put("/:id", async (req, res) => {
     try {
         const updatedSong = await Song.findByIdAndUpdate(
-            req.paramss.id, 
+            req.params.id, 
             req.body, 
             { new: true, runValidators: true }
         );
@@ -51,7 +51,7 @@ router.put("/", async (req, res) => {
 });
 
 // Delete song
-router.delete("/", async (req, res) => {
+router.delete("/:id", async (req, res) => {
     try {
         const deletedSong = await Song.findByIdAndDelete(req.params.id);
         if(!deletedSong) return res.status(404).json({ error: "Song not found" });

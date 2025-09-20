@@ -5,31 +5,19 @@ const router = express.Router();
 
 router.post("/", async(req, res) => {
     try {
-        const user = new User(req.body);
-        await user.save();
-        res.json(user);
+        const newUser = new User(req.body);
+        const savedUser = await newUser.save();
+        res.status(201).json(savedUser)
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
 });
 
-// CREATE a new user
-router.post("/", async (req, res) => {
-    console.log("POST body:", req.body);
-    try {
-        const { username, email, password } = req.body;
-        const user = await User.create({ username, email, password });
-        res.status(201).json(user);
-    } catch (err) {
-        res.status(400).json({ error: err.message });
-    }
-})
-
 // READ all users
 router.get("/", async (req, res) => {
     const users = await User.find();
     res.json(users);
-})
+});
 
 // READ single user by ID
 router.get("/:id", async (req, res) => {
@@ -40,8 +28,7 @@ router.get("/:id", async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-})
-
+});
 
 // UPDATE a user by ID
 router.put("/:id", async (req, res) => {
@@ -56,6 +43,6 @@ router.put("/:id", async (req, res) => {
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
-})
+});
 
 export default router;

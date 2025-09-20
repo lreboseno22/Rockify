@@ -19,13 +19,13 @@ router.get("/:id", async (req, res) => {
         const album = await Album.findById(req.params.id).populate("artist");
         if(!album) return res.status(404).json({ error: "Album not found" });
         res.json(album);
-    } catch {
+    } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
 
 // Post new album
-router.post("/:id", async (req, res) => {
+router.post("/", async (req, res) => {
     try {
         const newAlbum = new Album(req.body);
         const savedAlbum = await newAlbum.save();
