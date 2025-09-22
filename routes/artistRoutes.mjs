@@ -44,7 +44,7 @@ router.put("/:id", async (req, res) => {
             { new: true, runValidators: true }
         );
 
-        if(!updatedArtist) return res.status(404).json({ error: "Artist not found"});
+        if(!updatedArtist) return res.status(404).json({ error: "Artist not found" });
         res.json(updatedArtist);
     } catch (err) {
         res.status(500).json({ error: err.message });

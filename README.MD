@@ -11,7 +11,7 @@ All routes return JSON.
 | GET    | `/api/users/:id` | Get a user by ID          |
 | POST   | `/api/users`     | Create a new user         |
 | PUT    | `/api/users/:id` | Update a user by ID       |
-
+| DELETE | `/api/users/:id` | Delete user by ID         |
 
 ## Artists
 | Method | Endpoint             | Description          |
@@ -48,3 +48,16 @@ All routes return JSON.
 | POST   | `/api/playlists`      | Create a new playlist                      |
 | PATCH  | `/api/playlists/:id`  | Update playlist (rename / add/remove songs)|
 | DELETE | `/api/playlists/:id`  | Delete a playlist                          |
+
+
+# TEST DATA for API
+
+## Songs:
+
+## Playlists:
+
+## User:
+
+## Artists:
+
+## Albums:
